@@ -1,3 +1,9 @@
+@-moz-document url-prefix() {
+    * {
+        padding: 5px;
+    }
+}
+
 body {
     zoom: 2;
     -moz-transform: scale(2);
@@ -6,9 +12,14 @@ body {
 
 	background-color: #8DBDBF;
 
-	display: flex;
 	align-items: center;
 	justify-content: center;
+    
+    display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;      /* TWEENER - IE 10 */
+    display: -webkit-flex;     /* NEW - Chrome */
+    display:flex;
 }
 
 #parent {
@@ -18,7 +29,11 @@ body {
 }
 
 div {
-	display: flex;
+    display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;      /* TWEENER - IE 10 */
+    display: -webkit-flex;     /* NEW - Chrome */
+    display:flex;
 }
 
 .vert {
