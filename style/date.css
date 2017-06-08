@@ -1,5 +1,6 @@
 body {
-	zoom: 2;
+    zoom: 2;
+    -moz-transform: scale(2);
 
 	font-family: Arial, Helvetica, sans-serif;
 
@@ -46,7 +47,7 @@ label {
 	margin-bottom: -10px;
 }
 
-form {
+#dateform {
 	box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
 	background-color: #70C475; 
 	margin: 5px;

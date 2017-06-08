@@ -1,10 +1,12 @@
 <html>
 <head>
 
-<link rel="stylesheet" type="text/css" href="style/datepick.css">
+<link rel="stylesheet" type="text/css" href="style/ftskin/ui.fancytree.min.css">
+<link id="css" rel="stylesheet" type="text/css" href="style/date.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="src/datequery.js"></script>
+<script src="src/fancytree-deps.js"></script>
+<script src="src/treeQuery.js"></script>
 <script>
 $(function() {
 	$("#parent").fadeIn(400);
@@ -13,10 +15,11 @@ $(function() {
 
 </head>
 <body>
+<title>Querier</title>
 
 <div id="parent" class="vert">
 	<img src="/blobwebclient/style/logo.svg" alt="Unanet" style="width: 207; height: 56;">
-	<form>
+	<form id="dateform">
 		<div class="main vert">	
 			<div class = "hori">
 				<div class="vert">
@@ -31,6 +34,15 @@ $(function() {
 			<input type="submit">
 		</div>
 	</form>
+    
+</div>
+
+<div id="treeparent" style="display: none">
+    <form id="treeform">
+        <div id="tree">
+        </div>
+        <input type="submit">
+    </form>
 </div>
 
 </body>
