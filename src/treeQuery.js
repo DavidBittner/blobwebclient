@@ -2,7 +2,7 @@ $(document).ready( function() {
 	$("#dateform").submit( function() {
 		var formData = $(this).serialize();
 
-        
+        $("body").css("filter", "blur(2px)"); 
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if( this.readyState == 4 && this.status == 200 ) {
@@ -13,6 +13,7 @@ $(document).ready( function() {
 
                 $("#parent").fadeOut( "fast", function() { 
                     $("#css").attr("href","style/tree.css");
+                    $("body").css("filter","blur(0px");
                     $("#treeparent").fadeIn( "fast" );
                 });
 			}
