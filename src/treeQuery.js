@@ -6,16 +6,23 @@ $(document).ready( function() {
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if( this.readyState == 4 && this.status == 200 ) {
-                var object = JSON.parse( this.responseText ); 
-                object = object.contents;
+                try {
 
-                $("#tree").fancytree({ source:object, checkbox:true, selectMode:3 });
+                    var object = JSON.parse( this.responseText ); 
+                    object = object.contents;
 
-                $("#parent").fadeOut( "fast", function() { 
-                    $("#css").attr("href","style/tree.css");
-                    $("body").css("filter","blur(0px");
-                    $("#treeparent").fadeIn( "fast" );
-                });
+                    $("#tree").fancytree({ source:object, checkbox:true, selectMode:3 });
+
+                    $("#parent").fadeOut( "fast", function() { 
+                        $("#css").attr("href","style/tree.css");
+                        $("body").css("filter","blur(0px)");
+                        $("#treeparent").fadeIn( "fast" );
+                    });
+                }catch(e) {
+                    console.log(e);
+                    alert( this.responseText );
+                }
+                    
 			}
 		};
 
