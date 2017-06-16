@@ -1,6 +1,25 @@
+function toggleChildren( keys, node ) {
+
+    if( node.children != null ) {
+        for( var i = 0; i < node.children.length; i++ )
+        {
+            toggleChildren( keys, node.children[i] );
+        }
+    }
+
+    if( node.selected && !node.folder ) {
+        keys.push(node);
+    }else if( !node.folder ){
+        var index = keys.indexOf( node );
+        keys.splice( index, 1 );
+    }
+
+}
+
 $(document).ready( function() {
 
     var sessionUUID = null;
+    var keys = [];
     
 	$("#dateform").submit( function() {
 		var formData = $(this).serialize();
@@ -16,8 +35,13 @@ $(document).ready( function() {
                     var object = JSON.parse( this.responseText.substr( index, this.responseText.length ) ); 
                     object = object.contents;
 
-                    console.log(object);
-                    $("#tree").fancytree({ source:object, checkbox:true, selectMode:3 });
+                    $("#tree").fancytree({ 
+                        source:object, 
+                        checkbox:true, 
+                        select: function( event, data ) {
+                            toggleChildren( keys, data.node );
+                        },
+                        selectMode:3 });
 
                     $("body").css("filter", "blur(2px)"); 
                     $("#parent").fadeOut( "fast", function() { 
@@ -42,4 +66,26 @@ $(document).ready( function() {
 
 		return false;
 	});
+
+    $("#treeform").submit( function() {
+
+        if( keys.length == 0 ) {
+            alert( "No attachments selected." );
+            return false;
+        }
+
+        var keyList = "";
+        for( var i = 0; i < keys.length; i++ )
+        {
+            keyList += "'" + keys[i].key + "'";
+            if( i < keys.length-1 ) {
+                keyList+=",";
+            }
+        }
+
+        window.open('./src/blobquery.php?sessionid='+sessionUUID+'&keylist='+keyList);
+
+        keys = [];
+        return false;
+    });
 });
