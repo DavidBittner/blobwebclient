@@ -22,7 +22,7 @@ $zipName = $seshID . ".zip";
 shell_exec("zip -r $zipName $seshID/*");
 
 header('Content-Type: application/zip');
-header("Content-Disposition: attachment; filename = $zipName");
+header("Content-Disposition: attachment; filename = exports.zip");
 header('Content-Length: ' . filesize($zipName));
 header('Content-Transfer-Encoding: binary');
 

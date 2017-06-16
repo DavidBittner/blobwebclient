@@ -19,6 +19,7 @@ function toggleChildren( keys, node ) {
 $(document).ready( function() {
 
     var sessionUUID = null;
+    var initialized = false;
     var keys = [];
     
 	$("#dateform").submit( function() {
@@ -33,16 +34,22 @@ $(document).ready( function() {
                     console.log( "Your session ID was retrieved as: " + sessionUUID );
 
                     var object = JSON.parse( this.responseText.substr( index, this.responseText.length ) ); 
-                    object = object.contents;
 
-                    $("#tree").fancytree({ 
-                        source:object, 
-                        checkbox:true, 
-                        select: function( event, data ) {
-                            toggleChildren( keys, data.node );
-                        },
-                        selectMode:3 });
+                    if( !initialized ) {
+                        $("#tree").fancytree({ 
+                            source:object.contents, 
+                            checkbox:true, 
+                            select: function( event, data ) {
+                                toggleChildren( keys, data.node );
+                            },
+                            selectMode:3 }
+                        );
 
+                        initialized = true;
+                    }else{
+                        $("#tree").fancytree("getTree").source = object.contents;
+                    }
+                    
                     $("body").css("filter", "blur(2px)"); 
                     $("#parent").fadeOut( "fast", function() { 
                         $("#css").attr("href","style/tree.css");
@@ -51,7 +58,10 @@ $(document).ready( function() {
                     });
                 }catch(e) {
                     if( e.message.includes("Fancytree") ) {
+                        console.log(e.message);
+                        console.log(this.responseText);
                         alert("No results found.");
+                        object = null;
                     }else
                     {
                         alert(e.message);
@@ -85,7 +95,6 @@ $(document).ready( function() {
 
         window.open('./src/blobquery.php?sessionid='+sessionUUID+'&keylist='+keyList);
 
-        keys = [];
-        return false;
+        return true;
     });
 });
