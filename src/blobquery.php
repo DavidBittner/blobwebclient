@@ -1,5 +1,6 @@
 <?php
 
+//This deletes a directory and all of it's contents recursively.
 function recursiveRemoveDirectory($directory)
 {
     foreach(glob("{$directory}/*") as $file)
