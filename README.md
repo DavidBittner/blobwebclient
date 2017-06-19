@@ -12,6 +12,10 @@ in a directory of your web server and it should work right away.
 
 # List of Dependencies
 
-(Php5.4 and up)[http://php.net/]
-(FancyTree)[https://github.com/mar10/fancytree]
-(jQuery([https://jquery.com/]
+[Php5.4 and up](http://php.net/)
+
+
+[FancyTree](https://github.com/mar10/fancytree)
+
+
+[jQuery](https://jquery.com/)
