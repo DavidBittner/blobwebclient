@@ -1,6 +1,4 @@
-![Unanet](https://raw.githubusercontent.com/DavidBittner/blobwebclient/master/style/logo.svg "Unanet")
-
-# blobwebclient
+# Blob Retriever Web Client
 
 This is a web app that retrieves expense report attachments from a Unanet system. All dependencies are included.
 
