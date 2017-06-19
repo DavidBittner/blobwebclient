@@ -38,6 +38,10 @@ function toggleFade() {
 
 $(document).ready( function() {
 
+    var today = new Date();
+    $("#start").val(today.toLocaleDateString("en-US"));
+    $("#end").val(today.toLocaleDateString("en-US"));
+
     location.hash = "nb";
     $(window).on('hashchange', function() {
         if( location.hash === '' && !$("#dateform").is(":visible") ) {
