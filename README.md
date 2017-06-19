@@ -1,4 +1,4 @@
-(Unanet)[https://raw.githubusercontent.com/DavidBittner/blobwebclient/master/style/logo.svg "www.unanet.com"]
+[Unanet](https://raw.githubusercontent.com/DavidBittner/blobwebclient/master/style/logo.svg "www.unanet.com")
 
 # blobwebclient
 
