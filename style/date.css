@@ -3,6 +3,10 @@
         padding: 5px;
     }
 
+    body {
+        overflow: hidden;
+    }
+
     #parent {
         position: absolute;
         margin-left: auto;

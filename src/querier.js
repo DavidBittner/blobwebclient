@@ -77,9 +77,17 @@ $(document).ready( function() {
                 sessionUUID = this.responseText.substr(0, index);
                 console.log( "Your session ID was retrieved as: " + sessionUUID );
 
-                //The JSON is then parsed (or attempted to be parsed).
-                var object = JSON.parse( this.responseText.substr( index, this.responseText.length ) ); 
-                object = object.contents;
+                try
+				{
+					//The JSON is then parsed (or attempted to be parsed).
+	                var object = JSON.parse( this.responseText.substr( index, this.responseText.length ) ); 
+        	        object = object.contents;
+				}catch(err)
+				{
+					console.log(err);
+					console.log("Reponse Text: " + this.responseText);
+                    return;
+				}
 
                 if( object.hasOwnProperty("children") ) {
                     
