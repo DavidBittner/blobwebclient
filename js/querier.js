@@ -51,7 +51,7 @@ $(document).ready( function() {
 
     var startDate = null;
     var endDate = null;
-
+    
     var initialized = false;
     
     var keys = [];
@@ -72,10 +72,8 @@ $(document).ready( function() {
 
                 //This trims off the session ID from the beginning of the reponse.
 
-                alert( this.responseText );
                 //The JSON is then parsed (or attempted to be parsed).
                 var object = JSON.parse( this.responseText ); 
-                object = object.contents;
 
                 if( object.hasOwnProperty("children") ) {
                     
@@ -107,7 +105,7 @@ $(document).ready( function() {
 		};
 
 		var formData = $(this).serialize();
-		xhttp.open("GET","blobservlet.war?"+formData, true);
+		xhttp.open("GET","queryserv?"+formData, true);
 		xhttp.send();
 
 		return false;
@@ -123,13 +121,15 @@ $(document).ready( function() {
         var keyList = "";
         for( var i = 0; i < keys.length; i++ )
         {
-            keyList += "'" + keys[i].key + "'";
-            if( i < keys.length-1 ) {
-                keyList+=",";
-            }
+        	if( !keyList.contains(keys[i].key+",") ) {
+        		keyList += "'" + keys[i].key + "'";
+                if( i < keys.length-1 ) {
+                    keyList+=",";
+                }
+        	}
         }
 
-        window.location.replace('blobservlet/?'+'&keys='+keyList);
+        window.location = 'queryserv?keys='+keyList;
 
         toggleFade();
         return false;
