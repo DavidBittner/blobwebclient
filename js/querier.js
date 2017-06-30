@@ -53,7 +53,6 @@ $(document).ready( function() {
     var startDate = null;
     var endDate = null;
 
-    var sessionUUID = null;
     var initialized = false;
     
     var keys = [];
@@ -73,12 +72,10 @@ $(document).ready( function() {
 			if( this.readyState == 4 && this.status == 200 ) {
 
                 //This trims off the session ID from the beginning of the reponse.
-                var index = this.responseText.indexOf(' ');
-                sessionUUID = this.responseText.substr(0, index);
-                console.log( "Your session ID was retrieved as: " + sessionUUID );
 
+                alert( this.responseText );
                 //The JSON is then parsed (or attempted to be parsed).
-                var object = JSON.parse( this.responseText.substr( index, this.responseText.length ) ); 
+                var object = JSON.parse( this.responseText ); 
                 object = object.contents;
 
                 if( object.hasOwnProperty("children") ) {
@@ -111,7 +108,7 @@ $(document).ready( function() {
 		};
 
 		var formData = $(this).serialize();
-		xhttp.open("GET","src/treejson.php?"+formData, true);
+		xhttp.open("GET","BlobServ.war?"+formData, true);
 		xhttp.send();
 
 		return false;
@@ -133,7 +130,7 @@ $(document).ready( function() {
             }
         }
 
-        window.open('./src/blobquery.php?sessionid='+sessionUUID+'&keylist='+keyList);
+        window.location.replace('/blobwebclient/src/blobservlet.war?'+'&keys='+keyList);
 
         toggleFade();
         return false;
