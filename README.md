@@ -4,16 +4,11 @@ This is a web app that retrieves expense report attachments from a Unanet system
 
 # Installation
 
-This is entirely standalone, so installation should be easy. Just run:
+This is no longer standalone and is now a submodule of BlobRetriever/web
 
-```git clone https://www.github.com/DavidBittner/blobwebclient```
-
-in a directory of your web server and it should work right away.
+To use this, simply clone the BlobRetriever repository, open the project in eclipse and export as a WAR file. Drop it into the WebApps folder of your tomcat server and it'll automatically deploy it.
 
 # List of Dependencies
-
-[Php5.4 and up](http://php.net/)
-
 
 [FancyTree](https://github.com/mar10/fancytree)
 
