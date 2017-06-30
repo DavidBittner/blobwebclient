@@ -14,7 +14,6 @@ function toggleChildren( keys, node ) {
         var index = keys.indexOf( node );
         keys.splice( index, 1 );
     }
-
 }
 
 function toggleFade() {
@@ -108,7 +107,7 @@ $(document).ready( function() {
 		};
 
 		var formData = $(this).serialize();
-		xhttp.open("GET","BlobServ.war?"+formData, true);
+		xhttp.open("GET","blobservlet.war?"+formData, true);
 		xhttp.send();
 
 		return false;
@@ -130,7 +129,7 @@ $(document).ready( function() {
             }
         }
 
-        window.location.replace('/blobwebclient/src/blobservlet.war?'+'&keys='+keyList);
+        window.location.replace('blobservlet/?'+'&keys='+keyList);
 
         toggleFade();
         return false;
