@@ -45,6 +45,8 @@ $(function() {
     </div>
     <div>
         <form id="treeform">
+            <input type="checkbox" name="singleDir">Single Directory</input>
+            <input type="checkbox" onclick='selectAll($("#tree").fancytree("getRootNode"), this.checked)'>Select All</input>
             <div id="tree">
             </div>
             <input type="submit">
