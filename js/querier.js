@@ -16,6 +16,19 @@ function toggleChildren( keys, node ) {
     }
 }
 
+function selectAll( node, trueOrFalse )
+{
+	if( node.children != null )
+	{
+		for( var i = 0; i < node.children.length; i++ )
+		{
+			selectAll( node.children[i] );
+		}
+	}
+	
+	node.selected = trueOrFalse;
+}
+
 function toggleFade() {
     $("body").css("filter", "blur(2px)"); 
 
@@ -69,10 +82,6 @@ $(document).ready( function() {
             
             //Once the request comes back with valid data...
 			if( this.readyState == 4 && this.status == 200 ) {
-				console.log(this.responseText);
-				
-                //This trims off the session ID from the beginning of the reponse.
-
                 //The JSON is then parsed (or attempted to be parsed).
                 try
                 {
@@ -97,12 +106,14 @@ $(document).ready( function() {
 
                         initialized = true;
                     }else {
+                    	console.log("Error: not valid JSON. Assuming error message.");
                         alert( "No results found. Try a different range." );
                         return;
                     }
                 }catch( er )
                 {
                 	alert( this.responseText );
+                	return;
                 }
 				
                 //This is just the fade in for the second screen
@@ -128,7 +139,7 @@ $(document).ready( function() {
         var keyList = "";
         for( var i = 0; i < keys.length; i++ )
         {
-        	if( !keyList.contains(keys[i].key+",") ) {
+        	if( keyList.indexOf(keys[i].key+",") == -1 ) {
         		keyList += "'" + keys[i].key + "'";
                 if( i < keys.length-1 ) {
                     keyList+=",";
@@ -136,6 +147,7 @@ $(document).ready( function() {
         	}
         }
 
+        console.log("Keys requested: " + keyList);
         window.location = 'BlobServ?keys='+keyList;
 
         toggleFade();
