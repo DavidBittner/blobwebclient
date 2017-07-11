@@ -69,35 +69,42 @@ $(document).ready( function() {
             
             //Once the request comes back with valid data...
 			if( this.readyState == 4 && this.status == 200 ) {
-
+				console.log(this.responseText);
+				
                 //This trims off the session ID from the beginning of the reponse.
 
                 //The JSON is then parsed (or attempted to be parsed).
-                var object = JSON.parse( this.responseText ); 
+                try
+                {
+                	var object = JSON.parse( this.responseText ); 
 
-                if( object.hasOwnProperty("children") ) {
-                    
-                    if( initialized ) {
-                        var tree = $("#tree").fancytree("getTree");
-                        tree.reload( object );
-                    }else
-                    {
-                        $("#tree").fancytree({ 
-                            source:object, 
-                            checkbox:true, 
-                            select: function( event, data ) {
-                                toggleChildren( keys, data.node );
-                            },
-                            selectMode:3 
-                        });
+                    if( object.children.length > 0 ) {
+                        
+                        if( initialized ) {
+                            var tree = $("#tree").fancytree("getTree");
+                            tree.reload( object );
+                        }else
+                        {
+                            $("#tree").fancytree({ 
+                                source:object, 
+                                checkbox:true, 
+                                select: function( event, data ) {
+                                    toggleChildren( keys, data.node );
+                                },
+                                selectMode:3 
+                            });
+                        }
+
+                        initialized = true;
+                    }else {
+                        alert( "No results found. Try a different range." );
+                        return;
                     }
-
-                    initialized = true;
-                }else {
-                    alert( "No results found. Try a different range." );
-                    return;
+                }catch( er )
+                {
+                	alert( this.responseText );
                 }
-                
+				
                 //This is just the fade in for the second screen
                 toggleFade();
                 
@@ -105,7 +112,7 @@ $(document).ready( function() {
 		};
 
 		var formData = $(this).serialize();
-		xhttp.open("GET","queryserv?"+formData, true);
+		xhttp.open("GET","BlobServ?"+formData, true);
 		xhttp.send();
 
 		return false;
@@ -129,7 +136,7 @@ $(document).ready( function() {
         	}
         }
 
-        window.location = 'queryserv?keys='+keyList;
+        window.location = 'BlobServ?keys='+keyList;
 
         toggleFade();
         return false;
