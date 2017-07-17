@@ -34,12 +34,21 @@ function toggleFade() {
     }
 }
 
-function toggleLoading(mode) {
+function toggleLoading(mode, msg) {
     if( mode )
     {
-        $("#overlay").fadeIn();
+        $("#overlay").fadeIn({ duration: "fast", complete: function() {
+            if( msg != null )
+            {
+                alert(msg);
+            }
+        }});
     }else{
-        $("#overlay").fadeOut();
+        $("#overlay").fadeOut({duration: "fast", complete: function() {
+            if( msg != null ) {
+                alert(msg);
+            }
+        }});
     }
 }
 
@@ -65,7 +74,7 @@ $(document).ready( function() {
     var keys = [];
     
 	$("#dateform").submit( function() {
-        toggleLoading(true);
+        toggleLoading(true, null);
 
         startDate = $("#dateform input[name=start]").val().replace(/-/g,"/");
         endDate = $("#dateform input[name=end]").val().replace(/-/g,"/");
@@ -114,6 +123,9 @@ $(document).ready( function() {
                 }finally{
                     toggleLoading(false);
                 }
+            }else if( this.readyState == 4 && this.status == 404 )
+            {
+                toggleLoading(false, "404 Error. Are you connected to the internet?");
             }
 		};
 
@@ -144,7 +156,10 @@ $(document).ready( function() {
 
         console.log("Keys requested: " + keyList);
         var checked = (document.getElementById('singleDir').checked)?("on"):("off");
-        window.location = 'BlobServ?keys='+keyList+"&singleDir=" + checked;
+
+		var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", 'BlobServ?keys='+keyList+"&singleDir=" + checked );
+        xhttp.send();
 
         toggleFade();
         return false;
