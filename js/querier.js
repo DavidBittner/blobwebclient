@@ -105,6 +105,11 @@ $(document).ready( function() {
                                 select: function( event, data ) {
                                     toggleChildren( keys, data.node );
                                 },
+                                dblclick: function( event, data ) {
+                                	if( !data.node.folder ) {
+                                		window.open("BlobServ?key="+data.node.key);
+                                	}
+                                },
                                 selectMode:3 
                             });
                         }
