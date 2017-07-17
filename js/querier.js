@@ -16,19 +16,6 @@ function toggleChildren( keys, node ) {
     }
 }
 
-function selectAll( node, trueOrFalse )
-{
-	if( node.children != null )
-	{
-		for( var i = 0; i < node.children.length; i++ )
-		{
-			selectAll( node.children[i] );
-		}
-	}
-	
-	node.selected = trueOrFalse;
-}
-
 function toggleFade() {
     $("body").css("filter", "blur(2px)"); 
 
@@ -82,6 +69,7 @@ $(document).ready( function() {
             
             //Once the request comes back with valid data...
 			if( this.readyState == 4 && this.status == 200 ) {
+				console.log( this.responseText );
                 //The JSON is then parsed (or attempted to be parsed).
                 try
                 {
@@ -148,7 +136,8 @@ $(document).ready( function() {
         }
 
         console.log("Keys requested: " + keyList);
-        window.location = 'BlobServ?keys='+keyList;
+        var checked = (document.getElementById('singleDir').checked)?("on"):("off");
+        window.location = 'BlobServ?keys='+keyList+"&singleDir=" + checked;
 
         toggleFade();
         return false;
