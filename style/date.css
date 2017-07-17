@@ -102,7 +102,7 @@ input[type="submit"] {
 
     background-color: rgba(0, 0, 0, 0.8);
     z-index: 2;
-    cursor: pointer;
+    cursor: wait;
 
     align-items: center;
     justify-content: space-around;

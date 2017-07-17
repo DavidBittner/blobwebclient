@@ -17,36 +17,36 @@ function toggleChildren( keys, node ) {
 }
 
 function toggleFade() {
-    $("body").css("filter", "blur(2px)"); 
-
     if( $("#dateform").is(":visible") ) {
         $("#parent").fadeOut( "fast", function() { 
             $("#css").attr("href","style/tree.css");
-            $("body").css("filter","blur(0px)");
             $("#treeparent").fadeIn( "fast" );
         });
     }else{
         $("#treeparent").fadeOut( "fast", function() { 
             $("#css").attr("href","style/date.css");
-            $("body").css("filter","blur(0px)");
             $("#parent").fadeIn( "fast" );
         });
     }
 }
 
-function toggleLoading(mode, msg) {
+function deleteCookie( name ) {
+	  document.cookie = document.cookie + ";" + name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+function toggleLoading(mode, func) {
     if( mode )
     {
         $("#overlay").fadeIn({ duration: "fast", complete: function() {
-            if( msg != null )
+            if( func != null )
             {
-                alert(msg);
+                func();
             }
         }});
     }else{
         $("#overlay").fadeOut({duration: "fast", complete: function() {
-            if( msg != null ) {
-                alert(msg);
+            if( func != null ) {
+                func();
             }
         }});
     }
@@ -118,26 +118,38 @@ $(document).ready( function() {
                     }
                 }catch( er )
                 {
-                	alert( this.responseText );
+                	toggleLoading(false, function(){
+                		alert(this.responseText)
+                	});
                 	return;
                 }finally{
-                    toggleLoading(false);
+                    toggleLoading(false, null);
                 }
             }else if( this.readyState == 4 && this.status == 404 )
             {
-                toggleLoading(false, "404 Error. Are you connected to the internet?");
+                toggleLoading(false, function(){
+                	alert("404 Error. Are you connected to the internet?")
+                });
             }
 		};
 
 		var formData = $(this).serialize();
 		xhttp.open("GET","BlobServ?"+formData, true);
-		xhttp.send();
+		try
+		{
+			xhttp.send();
+		}catch(err){
+			toggleLoading(false, function(){
+            	alert(err)
+            });
+		}
 
 		return false;
 	});
 
     $("#treeform").submit( function() {
 
+		toggleLoading(true, null);
         if( keys.length == 0 ) {
             alert( "No attachments selected." );
             return false;
@@ -157,11 +169,30 @@ $(document).ready( function() {
         console.log("Keys requested: " + keyList);
         var checked = (document.getElementById('singleDir').checked)?("on"):("off");
 
-		var xhttp = new XMLHttpRequest();
-        xhttp.open("POST", 'BlobServ?keys='+keyList+"&singleDir=" + checked );
-        xhttp.send();
-
-        toggleFade();
+		var sessionIDRequest = new XMLHttpRequest();
+		sessionIDRequest.open("POST", 'BlobServ?keys='+keyList+"&singleDir=" + checked, true );
+		sessionIDRequest.onreadystatechange = function() {
+			
+			if( this.readyState == 4 && this.status == 200 ) {
+				console.log(this.responseText);
+				
+				var ret = setInterval(function() {
+					if( document.cookie.indexOf("querierSendFinished") != -1 ) {
+						clearInterval(ret);
+						deleteCookie("querierSendFinished");
+						toggleLoading(false, toggleFade());
+					}
+				}, 500);
+				
+				window.location.href = "BlobServ?sessionid="+this.responseText;
+			}else if(this.readyState == 4 && this.status == 404 ) {
+				toggleLoading(false, function() {
+					alert("404 error on file download.");
+				});
+			}
+        }
+		sessionIDRequest.send();
+		
         return false;
     });
 });
