@@ -32,7 +32,15 @@ function toggleFade() {
             $("#parent").fadeIn( "fast" );
         });
     }
+}
 
+function toggleLoading(mode) {
+    if( mode )
+    {
+        $("#overlay").fadeIn();
+    }else{
+        $("#overlay").fadeOut();
+    }
 }
 
 $(document).ready( function() {
@@ -57,6 +65,7 @@ $(document).ready( function() {
     var keys = [];
     
 	$("#dateform").submit( function() {
+        toggleLoading(true);
 
         startDate = $("#dateform input[name=start]").val().replace(/-/g,"/");
         endDate = $("#dateform input[name=end]").val().replace(/-/g,"/");
@@ -69,7 +78,6 @@ $(document).ready( function() {
             
             //Once the request comes back with valid data...
 			if( this.readyState == 4 && this.status == 200 ) {
-				console.log( this.responseText );
                 //The JSON is then parsed (or attempted to be parsed).
                 try
                 {
@@ -93,6 +101,7 @@ $(document).ready( function() {
                         }
 
                         initialized = true;
+                        toggleFade();
                     }else {
                     	console.log("Error: not valid JSON. Assuming error message.");
                         alert( "No results found. Try a different range." );
@@ -102,11 +111,9 @@ $(document).ready( function() {
                 {
                 	alert( this.responseText );
                 	return;
+                }finally{
+                    toggleLoading(false);
                 }
-				
-                //This is just the fade in for the second screen
-                toggleFade();
-                
             }
 		};
 
