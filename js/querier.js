@@ -92,7 +92,8 @@ $(document).ready( function() {
                 {
                 	var object = JSON.parse( this.responseText ); 
 
-                    if( object.children.length > 0 ) {
+                	//ew
+                    if( object.children[0].children.length > 0 ) {
                         
                         if( initialized ) {
                             var tree = $("#tree").fancytree("getTree");
@@ -135,10 +136,16 @@ $(document).ready( function() {
                 toggleLoading(false, function(){
                 	alert("404 Error. Are you connected to the internet?")
                 });
-            }
+            }else if( this.readyState == 4 && this.status == 500 )
+        	{
+            	toggleLoading(false, function(){
+                	alert("500 error. Something went wrong within the server.");
+                });
+        	}
 		};
 
 		var formData = $(this).serialize();
+		console.log(formData);
 		xhttp.open("GET","BlobServ?"+formData, true);
 		try
 		{
@@ -164,18 +171,20 @@ $(document).ready( function() {
         for( var i = 0; i < keys.length; i++ )
         {
         	if( keyList.indexOf(keys[i].key+",") == -1 ) {
-        		keyList += "'" + keys[i].key + "'";
-                if( i < keys.length-1 ) {
+            	keyList += keys[i].key;
+        		if( i < keys.length-1 ) {
                     keyList+=",";
                 }
         	}
         }
 
-        console.log("Keys requested: " + keyList);
         var checked = (document.getElementById('singleDir').checked)?("on"):("off");
-
+        var exclude = $('input[name=incinvoice]:checked', '#dateform').val();
+        
 		var sessionIDRequest = new XMLHttpRequest();
-		sessionIDRequest.open("POST", 'BlobServ?keys='+keyList+"&singleDir=" + checked, true );
+		sessionIDRequest.open("POST", 'BlobServ?keys='+keyList+"&singleDir=" + checked + "&" + "incinvoice="+exclude, true );
+		keys = [];
+		
 		sessionIDRequest.onreadystatechange = function() {
 			
 			if( this.readyState == 4 && this.status == 200 ) {

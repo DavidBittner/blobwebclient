@@ -53,7 +53,7 @@ div {
 
 .hori {
 	flex-direction: row;
-	justify-content: center;
+	justify-content: space-around;
 	align-items: center;
 }
 
@@ -76,7 +76,6 @@ label {
 #dateform {
 	box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
 	background-color: #70C475; 
-	margin: 5px;
 }
 
 input {
@@ -86,6 +85,10 @@ input {
 
 input[type="submit"] {
 	margin-top: -10px; 
+}
+
+input[type="radio"], label.radiolabel {
+	margin-bottom: 20px;
 }
 
 #overlay {
