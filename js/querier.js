@@ -31,7 +31,7 @@ function toggleFade() {
 }
 
 function deleteCookie( name ) {
-	  document.cookie = document.cookie + ";" + name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      document.cookie = document.cookie + ";" + name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
 function toggleLoading(mode, func) {
@@ -73,7 +73,7 @@ $(document).ready( function() {
     
     var keys = [];
     
-	$("#dateform").submit( function() {
+    $("#dateform").submit( function() {
         toggleLoading(true, null);
 
         startDate = $("#dateform input[name=start]").val().replace(/-/g,"/");
@@ -82,17 +82,17 @@ $(document).ready( function() {
         $("#datedisplay").html( startDate + " - " + endDate );
 
         //Create a new XMLHttpRequest for retrieving the JSON from Java
-		var xhttp = new XMLHttpRequest();
-		xhttp.onreadystatechange = function() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
             
             //Once the request comes back with valid data...
-			if( this.readyState == 4 && this.status == 200 ) {
+            if( this.readyState == 4 && this.status == 200 ) {
                 //The JSON is then parsed (or attempted to be parsed).
                 try
                 {
-                	var object = JSON.parse( this.responseText ); 
+                    var object = JSON.parse( this.responseText ); 
 
-                	//ew
+                    //ew
                     if( object.children[0].children.length > 0 ) {
                         
                         if( initialized ) {
@@ -107,9 +107,9 @@ $(document).ready( function() {
                                     toggleChildren( keys, data.node );
                                 },
                                 dblclick: function( event, data ) {
-                                	if( !data.node.folder ) {
-                                		window.open("BlobServ?key="+data.node.key);
-                                	}
+                                    if( !data.node.folder ) {
+                                        window.open("BlobServ?key="+data.node.key);
+                                    }
                                 },
                                 selectMode:3 
                             });
@@ -118,50 +118,50 @@ $(document).ready( function() {
                         initialized = true;
                         toggleFade();
                     }else {
-                    	console.log("Error: not valid JSON. Assuming error message.");
+                        console.log("Error: not valid JSON. Assuming error message.");
                         alert( "No results found. Try a different range." );
                         return;
                     }
                 }catch( er )
                 {
-                	toggleLoading(false, function(){
-                		alert(this.responseText)
-                	});
-                	return;
+                    toggleLoading(false, function(){
+                        alert(this.responseText)
+                    });
+                    return;
                 }finally{
                     toggleLoading(false, null);
                 }
             }else if( this.readyState == 4 && this.status == 404 )
             {
                 toggleLoading(false, function(){
-                	alert("404 Error. Are you connected to the internet?")
+                    alert("404 Error. Are you connected to the internet?")
                 });
             }else if( this.readyState == 4 && this.status == 500 )
-        	{
-            	toggleLoading(false, function(){
-                	alert("500 error. Something went wrong within the server.");
+            {
+                toggleLoading(false, function(){
+                    alert("500 error. Something went wrong within the server.");
                 });
-        	}
-		};
+            }
+        };
 
-		var formData = $(this).serialize();
-		console.log(formData);
-		xhttp.open("GET","BlobServ?"+formData, true);
-		try
-		{
-			xhttp.send();
-		}catch(err){
-			toggleLoading(false, function(){
-            	alert(err)
+        var formData = $(this).serialize();
+        console.log(formData);
+        xhttp.open("GET","BlobServ?"+formData, true);
+        try
+        {
+            xhttp.send();
+        }catch(err){
+            toggleLoading(false, function(){
+                alert(err)
             });
-		}
+        }
 
-		return false;
-	});
+        return false;
+    });
 
     $("#treeform").submit( function() {
 
-		toggleLoading(true, null);
+        toggleLoading(true, null);
         if( keys.length == 0 ) {
             alert( "No attachments selected." );
             return false;
@@ -170,43 +170,43 @@ $(document).ready( function() {
         var keyList = "";
         for( var i = 0; i < keys.length; i++ )
         {
-        	if( keyList.indexOf(keys[i].key+",") == -1 ) {
-            	keyList += keys[i].key;
-        		if( i < keys.length-1 ) {
+            if( keyList.indexOf(keys[i].key+",") == -1 ) {
+                keyList += keys[i].key;
+                if( i < keys.length-1 ) {
                     keyList+=",";
                 }
-        	}
+            }
         }
 
         var checked = (document.getElementById('singleDir').checked)?("on"):("off");
         var exclude = $('input[name=incinvoice]:checked', '#dateform').val();
         
-		var sessionIDRequest = new XMLHttpRequest();
-		sessionIDRequest.open("POST", 'BlobServ?keys='+keyList+"&singleDir=" + checked + "&" + "incinvoice="+exclude, true );
-		keys = [];
-		
-		sessionIDRequest.onreadystatechange = function() {
-			
-			if( this.readyState == 4 && this.status == 200 ) {
-				console.log(this.responseText);
-				
-				var ret = setInterval(function() {
-					if( document.cookie.indexOf("querierSendFinished") != -1 ) {
-						clearInterval(ret);
-						deleteCookie("querierSendFinished");
-						toggleLoading(false, toggleFade());
-					}
-				}, 500);
-				
-				window.location.href = "BlobServ?sessionid="+this.responseText;
-			}else if(this.readyState == 4 && this.status == 404 ) {
-				toggleLoading(false, function() {
-					alert("404 error on file download.");
-				});
-			}
+        var sessionIDRequest = new XMLHttpRequest();
+        sessionIDRequest.open("POST", 'BlobServ?keys='+keyList+"&singleDir=" + checked + "&" + "incinvoice="+exclude, true );
+        keys = [];
+        
+        sessionIDRequest.onreadystatechange = function() {
+            
+            if( this.readyState == 4 && this.status == 200 ) {
+                console.log(this.responseText);
+                
+                var ret = setInterval(function() {
+                    if( document.cookie.indexOf("querierSendFinished") != -1 ) {
+                        clearInterval(ret);
+                        deleteCookie("querierSendFinished");
+                        toggleLoading(false, toggleFade());
+                    }
+                }, 500);
+                
+                window.location.href = "BlobServ?sessionid="+this.responseText;
+            }else if(this.readyState == 4 && this.status == 404 ) {
+                toggleLoading(false, function() {
+                    alert("404 error on file download.");
+                });
+            }
         }
-		sessionIDRequest.send();
-		
+        sessionIDRequest.send();
+        
         return false;
     });
 });
